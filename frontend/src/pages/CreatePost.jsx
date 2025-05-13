@@ -1,36 +1,36 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import Markdown from 'react-markdown';
-import DarkModeToggle from '../components/DarkModeToggle';
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import Markdown from "react-markdown";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 const CreatePost = () => {
-  const [title, setTitle] = useState('');
-  const [markdown, setMarkdown] = useState('');
-  const [category, setCategory] = useState('');
-  const [tags, setTags] = useState('');
+  const [title, setTitle] = useState("");
+  const [markdown, setMarkdown] = useState("");
+  const [category, setCategory] = useState("");
+  const [tags, setTags] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !markdown || !category || !tags) {
-      return toast.error('Title, markdown, category, and tags are required');
+      return toast.error("Title, markdown, category, and tags are required");
     }
 
-    const tagsArray = tags.split(',').map(tag => tag.trim());
+    const tagsArray = tags.split(",").map((tag) => tag.trim());
 
     try {
-      await axios.post('http://localhost:5000/api/posts', { 
-        title, 
-        markdown, 
-        category, 
-        tags: tagsArray 
+      await axios.post("http://localhost:5000/api/posts", {
+        title,
+        markdown,
+        category,
+        tags: tagsArray,
       });
-      toast.success('Post created!');
-      navigate('/');
+      toast.success("Post created!");
+      navigate("/");
     } catch (err) {
-      toast.error('Error creating post');
+      toast.error("Error creating post");
     }
   };
 
@@ -40,6 +40,33 @@ const CreatePost = () => {
 
       <div className="max-w-5xl mx-auto px-6 py-6">
         <h2 className="text-3xl font-bold mb-4">📝 Create New Post</h2>
+
+        {/* Markdown Syntax Guide */}
+        <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded-lg mb-6 text-sm text-gray-900 dark:text-white">
+          <h3 className="text-xl font-semibold mb-2">
+            📚 Markdown Syntax Guide
+          </h3>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>
+              <strong>#</strong> for headers (e.g., <code># Header 1</code> for{" "}
+              <strong>&lt;h1&gt;</strong>)
+            </li>
+            <li>
+              <strong>*text*</strong> or <strong>**text**</strong> for italic or
+              bold text
+            </li>
+            <li>
+              <strong>-</strong> or <strong>*</strong> for unordered lists
+            </li>
+            <li>
+              For links: <code>[Link Text](http://example.com)</code>
+            </li>
+            <li>
+              For images: <code>![Alt Text](image-url)</code>
+            </li>
+          </ul>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             className="w-full p-3 rounded-lg bg-gray-700 backdrop-blur border border-white/30 text-white placeholder-gray-300"
@@ -49,7 +76,7 @@ const CreatePost = () => {
           />
           <textarea
             className="w-full h-40 p-3 rounded-lg bg-gray-700 backdrop-blur border border-white/30 text-white placeholder-gray-300"
-            placeholder="Write your markdown markdown here..."
+            placeholder="Write your markdown here..."
             value={markdown}
             onChange={(e) => setMarkdown(e.target.value)}
           />
